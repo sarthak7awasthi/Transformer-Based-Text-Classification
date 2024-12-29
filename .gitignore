@@ -1,0 +1,26 @@
+# Ignore Cargo-specific files
+/target/
+/**/*.rs.bk
+
+# Ignore package build files
+*.crate
+
+# Ignore backup and temporary files
+*.swp
+*.swo
+*.tmp
+*.bak
+*.old
+
+# Ignore editor and IDE files
+/.idea/
+/.vscode/
+/*.sublime-workspace
+/*.sublime-project
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore dependency manager files
+Cargo.lock
