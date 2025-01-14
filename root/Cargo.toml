@@ -9,3 +9,6 @@ edition = "2021"
 
 serde = "1.0"
 
+ndarray = "0.15"
+ndarray-rand = "0.14"
+
