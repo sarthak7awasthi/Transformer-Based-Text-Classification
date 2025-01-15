@@ -41,7 +41,7 @@ pub fn position_encoding_calculator(sequence_length: usize, embedding_dimensions
 
 #[cfg(test)]
 mod tests {
-    use super::*; // Import the function from the current module
+    use super::*; 
 
     #[test]
     fn test_positional_encoding_dimensions() {
@@ -49,7 +49,7 @@ mod tests {
         let embedding_dimensions = 6;
         let encodings = position_encoding_calculator(sequence_length, embedding_dimensions);
 
-        // Check matrix dimensions
+        
         assert_eq!(encodings.len(), sequence_length, "Sequence length mismatch");
         assert_eq!(encodings[0].len(), embedding_dimensions, "Embedding dimension mismatch");
     }
