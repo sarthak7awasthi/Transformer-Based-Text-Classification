@@ -2,7 +2,6 @@ use ndarray::{Array2, Axis};
 use ndarray_rand::rand_distr::Uniform;
 use ndarray_rand::RandomExt;
 
-
 /// Functional: FeedForwardNetwork
 /// Implements a two-layer feed-forward network with ReLU activation, used in transformer encoder layers.
 /// 
@@ -14,13 +13,6 @@ use ndarray_rand::RandomExt;
 ///   - `hidden_dim`: Size of the hidden layer (usize).
 ///   - `input_dim`: Size of the input (and output) vectors (usize).
 ///
-
-
-
-
-
-
-
 /// Functional: new
 /// Creates a new instance of the feed-forward network with randomly initialized weights and biases.
 /// 
@@ -39,19 +31,6 @@ use ndarray_rand::RandomExt;
 /// 
 /// Return: 
 ///   A 2D array of shape (batch_size, input_dim), representing the processed output.
-///
-
-
-
-
-
-
-
-
-
-
-
-
 
 pub struct FeedForwardNetwork {
     w1: Array2<f64>, // Weight matrix for the first dense layer
@@ -63,9 +42,8 @@ pub struct FeedForwardNetwork {
 }
 
 impl FeedForwardNetwork {
-  
+    /// Creates a new instance of the feed-forward network.
     pub fn new(input_dim: usize, hidden_dim: usize) -> Self {
-  
         let w1 = Array2::random((input_dim, hidden_dim), Uniform::new(-0.1, 0.1));
         let b1 = Array2::zeros((1, hidden_dim));
         let w2 = Array2::random((hidden_dim, input_dim), Uniform::new(-0.1, 0.1));
@@ -81,12 +59,11 @@ impl FeedForwardNetwork {
         }
     }
 
-  
+    /// Applies the feed-forward network to a batch of input data.
     pub fn forward(&self, x: &Array2<f64>) -> Array2<f64> {
-  
         assert_eq!(x.shape()[1], self.input_dim, "Input dimensions do not match!");
 
-     
+        // First dense layer with ReLU activation
         let mut h = x.dot(&self.w1) + &self.b1;
         h.mapv_inplace(|v| v.max(0.0));
 
@@ -102,29 +79,23 @@ mod tests {
     use super::*;
     use ndarray::array;
 
-
     #[test]
     fn test_feed_forward() {
         let input_dim = 4;
         let hidden_dim = 8;
         let batch_size = 2;
 
-
         let ff = FeedForwardNetwork::new(input_dim, hidden_dim);
 
-     
         let x = array![
             [1.0, 2.0, 3.0, 4.0],
             [4.0, 3.0, 2.0, 1.0]
         ];
 
-
         let y = ff.forward(&x);
 
-   
         assert_eq!(y.shape(), &[batch_size, input_dim]);
 
-        
         println!("Input: {:?}", x);
         println!("Output: {:?}", y);
     }
