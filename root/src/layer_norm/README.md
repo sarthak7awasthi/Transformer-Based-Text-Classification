@@ -89,22 +89,6 @@ Returns:
 
 - Normalized vector with the same dimensions as the input
 
-## Testing
-
-The module includes comprehensive tests to verify the implementation:
-
-```rust
-#[test]
-fn test_apply_layer_norm() {
-    // Test implementation details
-}
-```
-
-Tests verify that:
-
-- Output mean is approximately zero
-- Output variance is approximately one
-- Scaling and shifting parameters work correctly
 
 ## Role in Transformer Architecture
 
@@ -114,22 +98,3 @@ This implementation is designed to work seamlessly in Transformer architectures 
 - Before/after feed-forward networks
 - In pre-norm or post-norm configurations
 
-## Performance Considerations
-
-- Optimized for single-instance normalization
-- Suitable for variable sequence lengths
-- Batch size independent
-- Numerically stable computations
-
-## Requirements
-
-- Rust 1.54 or higher
-- No external dependencies
-
-## License
-
-[Insert your license information here]
-
-## Contributing
-
-[Insert contribution guidelines here]
