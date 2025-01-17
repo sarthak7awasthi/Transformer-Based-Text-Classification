@@ -6,6 +6,8 @@ mod encoder;
 mod embedding;
 mod transformer;
 mod classification;
+mod tokenization;
+mod configurration;
 
 use positional_encoding::position_encoding_calculator;
 use attention::{scaled_dot_product_attention, multi_head_attention};
@@ -14,6 +16,7 @@ use layer_norm::{apply_layer_norm, test_apply_layer_norm};
 use encoder::EncoderLayer;
 use embedding::embeddings::Embeddings;
 use transformer::{Transformer, TransformerConfig};
+use tokenization::tokenizer::Tokenizer;
 
 fn main() {
     println!("Running all module tests...\n");
@@ -25,6 +28,7 @@ fn main() {
     test_encoder_layer();
     test_embeddings();
     test_transformer();
+    test_tokenizer();
 
     println!("\nAll module tests completed successfully!");
 }
@@ -91,7 +95,7 @@ fn test_embeddings() {
 }
 
 fn test_transformer() {
-    // Create a mock vocabulary and embeddings
+    // a mock vocabulary and embeddings
     let vocab = std::collections::HashMap::from([
         ("hello".to_string(), 0),
         ("world".to_string(), 1),
@@ -99,10 +103,9 @@ fn test_transformer() {
     ]);
     let d_model = 4;
 
-    // Instantiate embeddings
     let embeddings = Embeddings::new(vocab.clone(), d_model);
 
-    // Transformer configuration
+ 
     let config = TransformerConfig {
         num_layers: 2,
         d_model,
@@ -112,10 +115,10 @@ fn test_transformer() {
         epsilon: 1e-6,
     };
 
-    // Create the transformer
+ 
     let transformer = Transformer::new(config);
 
-    // Input tokens
+
     let input_tokens = vec!["hello".to_string(), "world".to_string(), "unknown".to_string()];
     let batched_embeddings: Vec<Vec<Vec<f64>>> = vec![
         embeddings
@@ -125,8 +128,23 @@ fn test_transformer() {
             .collect(),
     ];
 
-    // Forward pass through the transformer
+   
     let logits = transformer.forward(&batched_embeddings);
 
     println!("Transformer Output (Logits):\n{:?}\n", logits);
+}
+
+fn test_tokenizer() {
+    let dataset = vec![
+        "Hello world!".to_string(),
+        "Rust is amazing.".to_string(),
+    ];
+
+    let special_tokens = vec!["[PAD]", "[UNK]"];
+    let vocab = Tokenizer::build_vocab(&dataset, &special_tokens, Some(100));
+
+    let tokenizer = Tokenizer::new(vocab.clone(), 128);
+
+    let tokenized = tokenizer.tokenize_and_pad_batch(&dataset);
+    println!("Tokenized and Padded Sequences:\n{:?}\n", tokenized);
 }
