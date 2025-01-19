@@ -13,6 +13,8 @@ mod cross_entropy;
 mod model_optimizer;
 mod training;
 mod model_evaluator;
+mod model_inference; // Add this line to include the module
+
 
 use std::collections::HashMap;
 use positional_encoding::position_encoding_calculator;
@@ -28,6 +30,7 @@ use cross_entropy::loss::Loss;
 use model_optimizer::optimizer::{Optimizer, OptimizerType};
 use training::trainer::Trainer;
 use model_evaluator::evaluator::Evaluator;
+use model_inference::inference::Inference;
 use crate::configurration::config::{PAD_TOKEN, UNK_TOKEN, MAX_SEQ_LENGTH};
 
 fn main() {
@@ -46,6 +49,7 @@ fn main() {
     test_optimizer();
     test_trainer();
     test_evaluator();
+    test_inference(); 
 
     println!("\nAll module tests completed successfully!");
 }
@@ -237,5 +241,41 @@ fn test_evaluator() {
             }
         }
         Err(e) => eprintln!("Failed to load model for evaluation: {}", e),
+    }
+}
+
+fn test_inference() {
+    let vocab = HashMap::from([
+        (PAD_TOKEN.to_string(), 0),  // Use constant from config
+        (UNK_TOKEN.to_string(), 1),  // Use constant from config
+        ("hello".to_string(), 2),
+        ("world".to_string(), 3),
+    ]);
+
+    let config = TransformerConfig {
+        num_layers: 2,
+        d_model: 128,
+        num_heads: 8,
+        ff_dim: 256,
+        num_classes: 2,
+        epsilon: 1e-6,
+    };
+
+    let tokenizer = Tokenizer::new(vocab.clone(), MAX_SEQ_LENGTH);
+    let model_path = "src/trained_model.json"; // Adjust path if needed
+
+    match model_inference::inference::Inference::new(model_path, &tokenizer) {
+        Ok(inference) => {
+            let input_text = "hello world";
+            match inference.predict(input_text) {
+                Ok((predicted_class, probabilities)) => {
+                    println!("Input: {}", input_text);
+                    println!("Predicted Class: {}", predicted_class);
+                    println!("Probabilities: {:?}", probabilities);
+                }
+                Err(e) => eprintln!("Error during inference: {}", e),
+            }
+        }
+        Err(e) => eprintln!("Failed to load inference model: {}", e),
     }
 }
