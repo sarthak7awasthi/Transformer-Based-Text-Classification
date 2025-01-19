@@ -72,6 +72,27 @@ impl FeedForwardNetwork {
 
         y 
     }
+
+    /// Collect mutable references to all trainable parameters.
+    pub fn parameters_mut(&mut self) -> Vec<&mut f64> {
+        let mut params = vec![];
+
+        // Add mutable references to all parameters
+        for value in self.w1.iter_mut() {
+            params.push(value);
+        }
+        for value in self.b1.iter_mut() {
+            params.push(value);
+        }
+        for value in self.w2.iter_mut() {
+            params.push(value);
+        }
+        for value in self.b2.iter_mut() {
+            params.push(value);
+        }
+
+        params
+    }
 }
 
 #[cfg(test)]
@@ -98,5 +119,17 @@ mod tests {
 
         println!("Input: {:?}", x);
         println!("Output: {:?}", y);
+    }
+
+    #[test]
+    fn test_parameters_mut() {
+        let input_dim = 4;
+        let hidden_dim = 8;
+
+        let mut ff = FeedForwardNetwork::new(input_dim, hidden_dim);
+        let params = ff.parameters_mut();
+
+        // Ensure all parameters are collected
+        assert_eq!(params.len(), input_dim * hidden_dim + hidden_dim + hidden_dim * input_dim + input_dim);
     }
 }

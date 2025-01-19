@@ -1,72 +1,58 @@
-/// Module for layer normalization
-/// Functional: apply_layer_norm: Applies layer normalization to stabilize training.
+use ndarray::{Array2, ArrayView2, Axis};
+
+/// Applies layer normalization to stabilize training.
 ///
-/// Parameters:
-///   - `inputs`: A reference to a vector of feature values for a single instance (`Vec<f64>`).
-///   - `epsilon`: A small constant to prevent division by zero (`f64`).
-///   - `gamma`: A scaling parameter for normalized outputs (`Vec<f64>`).
-///   - `beta`: A shifting parameter for normalized outputs (`Vec<f64>`).
-///
-/// Return:
-///   A vector (`Vec<f64>`) representing the normalized output for the given instance.
-pub fn apply_layer_norm(
-	inputs: &Vec<f64>,
-	epsilon: f64,
-	gamma: &Vec<f64>,
-	beta: &Vec<f64>,
-) -> Vec<f64> {
-	assert_eq!(inputs.len(), gamma.len(), "Gamma size mismatch");
-	assert_eq!(inputs.len(), beta.len(), "Beta size mismatch");
+/// # Arguments
+/// - `inputs`: A 2D array of feature values for a batch. Shape: [batch_size, feature_dim].
+/// - `epsilon`: A small constant to prevent division by zero.
+/// 
+/// # Returns
+/// - A 2D array of normalized outputs. Shape: [batch_size, feature_dim].
+pub fn apply_layer_norm(inputs: &Array2<f64>, epsilon: f64) -> Array2<f64> {
+	let mean = inputs.mean_axis(Axis(1)).unwrap();
+	let variance = inputs.var_axis(Axis(1), 0.0);
 
-
-	let mean: f64 = inputs.iter().sum::<f64>() / inputs.len() as f64;
-
-	let variance: f64 = inputs
-			.iter()
-			.map(|&x| (x - mean).powi(2))
-			.sum::<f64>()
-			/ inputs.len() as f64;
-
-
-	inputs
-			.iter()
-			.enumerate()
-			.map(|(i, &x)| {
-					let normalized = (x - mean) / ((variance + epsilon).sqrt());
-					gamma[i] * normalized + beta[i]
-			})
-			.collect()
+	let mut normed = inputs.clone();
+	for ((mut row, &m), &v) in normed.outer_iter_mut().zip(mean.iter()).zip(variance.iter()) {
+			let std = (v + epsilon).sqrt();
+			row.mapv_inplace(|x| (x - m) / std);
+	}
+	normed
 }
 
-/// Functional: test_apply_layer_norm: Tests the `apply_layer_norm` function.
+
+/// Tests the `apply_layer_norm` function.
 ///
-/// Parameters: None.
-/// Return: Prints test results to confirm functionality.
+/// Verifies:
+/// - The mean of the normalized outputs is approximately zero.
+/// - The variance of the normalized outputs is approximately one.
 pub fn test_apply_layer_norm() {
+    let inputs = Array2::from_shape_vec(
+        (2, 4),
+        vec![1.0, 2.0, 3.0, 4.0, 4.0, 3.0, 2.0, 1.0],
+    )
+    .unwrap();
+    let epsilon = 1e-5;
 
-	let inputs = vec![1.0, 2.0, 3.0, 4.0];
-	let gamma = vec![1.0, 1.0, 1.0, 1.0];
-	let beta = vec![0.0, 0.0, 0.0, 0.0];
-	let epsilon = 1e-5;
+    let normalized = apply_layer_norm(&inputs, epsilon);
 
+    // Check mean and variance for each row
+    for row in normalized.outer_iter() {
+        let mean: f64 = row.mean().unwrap();
+        let variance: f64 = row.var(1e-5);
+        assert!((mean - 0.0).abs() < 1e-6, "Mean is not zero!");
+        assert!((variance - 1.0).abs() < 1e-5, "Variance is not one!");
+    }
 
-	let normalized = apply_layer_norm(&inputs, epsilon, &gamma, &beta);
+    println!("LayerNorm test passed!");
+}
 
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-	let mean: f64 = normalized.iter().sum::<f64>() / normalized.len() as f64;
-	let variance: f64 = normalized
-			.iter()
-			.map(|&x| (x - mean).powi(2))
-			.sum::<f64>()
-			/ normalized.len() as f64;
-
-	println!("Normalized Values: {:?}", normalized);
-	println!("Mean: {:.6}", mean);
-	println!("Variance: {:.6}", variance);
-
-
-	assert!((mean - 0.0).abs() < 1e-6, "Mean is not zero!");
-	assert!((variance - 1.0).abs() < 1e-5, "Variance is not close to one!"); 
-
-	println!("LayerNorm test passed!");
+    #[test]
+    fn test_layer_norm_basic() {
+        test_apply_layer_norm();
+    }
 }

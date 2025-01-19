@@ -1,0 +1,82 @@
+[
+	{
+		"text": "Win a brand-new car by entering our contest now!",
+		"label": 1
+	},
+	{
+		"text": "Reminder: Your dentist appointment is at 10 AM tomorrow.",
+		"label": 0
+	},
+	{
+		"text": "Limited-time offer: Save 30% on your next purchase!",
+		"label": 1
+	},
+	{
+		"text": "Your requested document has been uploaded to the shared drive.",
+		"label": 0
+	},
+	{
+		"text": "Act fast! Get a free eBook with your subscription!",
+		"label": 1
+	},
+	{
+		"text": "The performance evaluation results will be shared tomorrow.",
+		"label": 0
+	},
+	{
+		"text": "Claim your free vacation package by signing up here!",
+		"label": 1
+	},
+	{
+		"text": "Please RSVP for the team-building activity next week.",
+		"label": 0
+	},
+	{
+		"text": "Congratulations! You have won a free membership!",
+		"label": 1
+	},
+	{
+		"text": "The final version of the project plan is now available.",
+		"label": 0
+	},
+	{
+		"text": "Get rich quick with this once-in-a-lifetime opportunity!",
+		"label": 1
+	},
+	{
+		"text": "Please submit your expense reports by the end of this week.",
+		"label": 0
+	},
+	{
+		"text": "Click here to claim your $100 shopping voucher!",
+		"label": 1
+	},
+	{
+		"text": "The IT team has resolved the system downtime issue.",
+		"label": 0
+	},
+	{
+		"text": "Win a free smartwatch by entering this giveaway now!",
+		"label": 1
+	},
+	{
+		"text": "Your monthly utility bill is now available online.",
+		"label": 0
+	},
+	{
+		"text": "Sign up for our newsletter to receive exclusive offers!",
+		"label": 1
+	},
+	{
+		"text": "The marketing strategy document is ready for review.",
+		"label": 0
+	},
+	{
+		"text": "Limited offer: Free delivery on orders above $100!",
+		"label": 1
+	},
+	{
+		"text": "The holiday schedule has been updated on the portal.",
+		"label": 0
+	}
+]

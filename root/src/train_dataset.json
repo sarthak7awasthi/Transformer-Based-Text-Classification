@@ -1,0 +1,666 @@
+[
+	{
+		"text": "Win a free iPhone now!",
+		"label": "spam"
+	},
+	{
+		"text": "Meeting scheduled for 10 AM tomorrow.",
+		"label": "not spam"
+	},
+	{
+		"text": "Congratulations, you have won a lottery!",
+		"label": "spam"
+	},
+	{
+		"text": "Don't forget to submit your assignment.",
+		"label": "not spam"
+	},
+	{
+		"text": "Earn $1000 per week from home!",
+		"label": "spam"
+	},
+	{
+		"text": "Your package is out for delivery.",
+		"label": "not spam"
+	},
+	{
+		"text": "Exclusive deal: Buy 1 Get 1 Free!",
+		"label": "spam"
+	},
+	{
+		"text": "The team meeting has been rescheduled to 3 PM.",
+		"label": "not spam"
+	},
+	{
+		"text": "Free vacation to the Bahamas!",
+		"label": "spam"
+	},
+	{
+		"text": "Your order has been successfully placed.",
+		"label": "not spam"
+	},
+	{
+		"text": "You won't believe this secret to losing weight!",
+		"label": "spam"
+	},
+	{
+		"text": "Exclusive access to luxury cruises! Sign up today!",
+		"label": "spam"
+	},
+	{
+		"text": "Don't forget about tomorrow's team lunch at noon.",
+		"label": "not spam"
+	},
+	{
+		"text": "Get paid instantly by completing these simple tasks!",
+		"label": "spam"
+	},
+	{
+		"text": "The board meeting has been shifted to next Friday.",
+		"label": "not spam"
+	},
+	{
+		"text": "Win a $500 gift card by entering this sweepstakes now!",
+		"label": "spam"
+	},
+	{
+		"text": "Please find the project draft attached for your review.",
+		"label": "not spam"
+	},
+	{
+		"text": "Hurry! This exclusive deal ends in 6 hours!",
+		"label": "spam"
+	},
+	{
+		"text": "The server maintenance is scheduled for 3 AM Sunday.",
+		"label": "not spam"
+	},
+	{
+		"text": "Congratulations! You're eligible for a free home makeover!",
+		"label": "spam"
+	},
+	{
+		"text": "Remember to update your emergency contact details.",
+		"label": "not spam"
+	},
+	{
+		"text": "Transform your career with this one-time online course!",
+		"label": "spam"
+	},
+	{
+		"text": "The IT department has resolved the ticket issue.",
+		"label": "not spam"
+	},
+	{
+		"text": "Click to learn the secrets to becoming a millionaire!",
+		"label": "spam"
+	},
+	{
+		"text": "All employees are required to attend the fire drill.",
+		"label": "not spam"
+	},
+	{
+		"text": "Unlock premium features for free with this special code!",
+		"label": "spam"
+	},
+	{
+		"text": "The agenda for Monday's meeting is now available.",
+		"label": "not spam"
+	},
+	{
+		"text": "You can lose weight fast with this miracle pill!",
+		"label": "spam"
+	},
+	{
+		"text": "Your monthly performance review is scheduled for next week.",
+		"label": "not spam"
+	},
+	{
+		"text": "Sign up now for exclusive holiday deals!",
+		"label": "spam"
+	},
+	{
+		"text": "The system downtime has been postponed to midnight.",
+		"label": "not spam"
+	},
+	{
+		"text": "Earn money fast by working from home!",
+		"label": "spam"
+	},
+	{
+		"text": "The HR team has uploaded the new leave policy.",
+		"label": "not spam"
+	},
+	{
+		"text": "Win an electric bike by joining our fitness challenge!",
+		"label": "spam"
+	},
+	{
+		"text": "Please review the updated sales targets for this quarter.",
+		"label": "not spam"
+	},
+	{
+		"text": "Claim your free samples by filling out this short form!",
+		"label": "spam"
+	},
+	{
+		"text": "The holiday schedule has been shared on the intranet.",
+		"label": "not spam"
+	},
+	{
+		"text": "You won't believe these deals on home electronics!",
+		"label": "spam"
+	},
+	{
+		"text": "The operations team will conduct a workshop on Wednesday.",
+		"label": "not spam"
+	},
+	{
+		"text": "Exclusive access to free stock market tips!",
+		"label": "spam"
+	},
+	{
+		"text": "All staff are requested to update their bank details.",
+		"label": "not spam"
+	},
+	{
+		"text": "Hurry! Get 3 months of premium subscription for free!",
+		"label": "spam"
+	},
+	{
+		"text": "The company picnic is scheduled for Saturday morning.",
+		"label": "not spam"
+	},
+	{
+		"text": "Earn rewards instantly by completing simple tasks online!",
+		"label": "spam"
+	},
+	{
+		"text": "Your updated travel itinerary is now available.",
+		"label": "not spam"
+	},
+	{
+		"text": "Win $100 daily by joining this contest now!",
+		"label": "spam"
+	},
+	{
+		"text": "The leadership team has finalized next year's goals.",
+		"label": "not spam"
+	},
+	{
+		"text": "Get 70% off your next purchase with this coupon!",
+		"label": "spam"
+	},
+	{
+		"text": "The client feedback report is now available for review.",
+		"label": "not spam"
+	},
+	{
+		"text": "Enter the lottery now for a chance to win $1,000,000!",
+		"label": "spam"
+	},
+	{
+		"text": "The team outing details have been emailed to everyone.",
+		"label": "not spam"
+	},
+	{
+		"text": "Sign up for our newsletter and get free recipes!",
+		"label": "spam"
+	},
+	{
+		"text": "The server logs have been archived for future reference.",
+		"label": "not spam"
+	},
+	{
+		"text": "Your lucky day! Win exclusive prizes with one click!",
+		"label": "spam"
+	},
+	{
+		"text": "The office will remain closed next Friday for maintenance.",
+		"label": "not spam"
+	},
+	{
+		"text": "Complete the survey to get a $20 Amazon gift card!",
+		"label": "spam"
+	},
+	{
+		"text": "The IT support team will be available 24/7 starting this week.",
+		"label": "not spam"
+	},
+	{
+		"text": "Limited time only! Get exclusive access to new features!",
+		"label": "spam"
+	},
+	{
+		"text": "The payroll has been processed and updated in the system.",
+		"label": "not spam"
+	},
+	{
+		"text": "Special offer: Free shipping on all orders above $50!",
+		"label": "spam"
+	},
+	{
+		"text": "The presentation schedule has been finalized.",
+		"label": "not spam"
+	},
+	{
+		"text": "Reminder: Doctor's appointment at 5 PM.",
+		"label": "not spam"
+	},
+	{
+		"text": "Get rich quick with this amazing opportunity!",
+		"label": "spam"
+	},
+	{
+		"text": "Your electricity bill is due tomorrow.",
+		"label": "not spam"
+	},
+	{
+		"text": "Click here to claim your free gift card!",
+		"label": "spam"
+	},
+	{
+		"text": "Please review the attached project plan.",
+		"label": "not spam"
+	},
+	{
+		"text": "Make $500 today with no experience needed!",
+		"label": "spam"
+	},
+	{
+		"text": "Your subscription renewal is due next week.",
+		"label": "not spam"
+	},
+	{
+		"text": "Act now to win a brand-new car!",
+		"label": "spam"
+	},
+	{
+		"text": "The quarterly report is now available for review.",
+		"label": "not spam"
+	},
+	{
+		"text": "Claim your free samples today!",
+		"label": "spam"
+	},
+	{
+		"text": "Remember to update your timesheet by EOD.",
+		"label": "not spam"
+	},
+	{
+		"text": "Hot singles in your area are waiting for you!",
+		"label": "spam"
+	},
+	{
+		"text": "The budget meeting has been moved to 2 PM.",
+		"label": "not spam"
+	},
+	{
+		"text": "Unlock the secret to earning millions overnight!",
+		"label": "spam"
+	},
+	{
+		"text": "Your flight has been confirmed for tomorrow at 8 AM.",
+		"label": "not spam"
+	},
+	{
+		"text": "Double your income in just 30 days!",
+		"label": "spam"
+	},
+	{
+		"text": "Thank you for your payment. Receipt is attached.",
+		"label": "not spam"
+	},
+	{
+		"text": "Exclusive offer: Save 50% on your next purchase!",
+		"label": "spam"
+	},
+	{
+		"text": "The system update will occur at midnight.",
+		"label": "not spam"
+	},
+	{
+		"text": "Congratulations! You've been selected as a winner!",
+		"label": "spam"
+	},
+	{
+		"text": "Your bank statement for this month is now available.",
+		"label": "not spam"
+	},
+	{
+		"text": "Sign up now to receive your free trial!",
+		"label": "spam"
+	},
+	{
+		"text": "Please RSVP for the annual company dinner.",
+		"label": "not spam"
+	},
+	{
+		"text": "Win big prizes by clicking the link below!",
+		"label": "spam"
+	},
+	{
+		"text": "The invoice for your recent purchase is attached.",
+		"label": "not spam"
+	},
+	{
+		"text": "This investment opportunity won't last long!",
+		"label": "spam"
+	},
+	{
+		"text": "Meeting agenda for next week is attached.",
+		"label": "not spam"
+	},
+	{
+		"text": "Your loan has been approved! Apply now!",
+		"label": "spam"
+	},
+	{
+		"text": "Don't forget to bring your ID for the conference.",
+		"label": "not spam"
+	},
+	{
+		"text": "Act now to claim your $1000 cash reward!",
+		"label": "spam"
+	},
+	{
+		"text": "The quarterly earnings report is ready for review.",
+		"label": "not spam"
+	},
+	{
+		"text": "Free webinar: Learn to trade like a pro!",
+		"label": "spam"
+	},
+	{
+		"text": "The project deadline has been extended to next Friday.",
+		"label": "not spam"
+	},
+	{
+		"text": "You are pre-approved for a $5000 credit card!",
+		"label": "spam"
+	},
+	{
+		"text": "Remember to change your password regularly.",
+		"label": "not spam"
+	},
+	{
+		"text": "Special promotion: Get 70% off all items!",
+		"label": "spam"
+	},
+	{
+		"text": "The maintenance team will be working on the HVAC system.",
+		"label": "not spam"
+	},
+	{
+		"text": "Win a $500 shopping spree by signing up now!",
+		"label": "spam"
+	},
+	{
+		"text": "The security patch has been successfully deployed.",
+		"label": "not spam"
+	},
+	{
+		"text": "Congratulations! You've been selected for a free trial!",
+		"label": "spam"
+	},
+	{
+		"text": "Please attend the client meeting at 11 AM.",
+		"label": "not spam"
+	},
+	{
+		"text": "Exclusive opportunity to earn $2000 daily!",
+		"label": "spam"
+	},
+	{
+		"text": "The minutes from the last meeting are attached.",
+		"label": "not spam"
+	},
+	{
+		"text": "Join now to receive free stocks!",
+		"label": "spam"
+	},
+	{
+		"text": "Your account has been successfully updated.",
+		"label": "not spam"
+	},
+	{
+		"text": "Huge discounts on electronics! Act now!",
+		"label": "spam"
+	},
+	{
+		"text": "A reminder about your upcoming dental appointment.",
+		"label": "not spam"
+	},
+	{
+		"text": "Limited time offer: Get your free gift today!",
+		"label": "spam"
+	},
+	{
+		"text": "The presentation slides are now available for download.",
+		"label": "not spam"
+	},
+	{
+		"text": "Win a brand-new laptop by entering this contest!",
+		"label": "spam"
+	},
+	{
+		"text": "Please find the attached project documentation.",
+		"label": "not spam"
+	},
+	{
+		"text": "Get paid to take surveys online. Sign up now!",
+		"label": "spam"
+	},
+	{
+		"text": "Your requested leave has been approved.",
+		"label": "not spam"
+	},
+	{
+		"text": "Start your free trial today with no credit card required!",
+		"label": "spam"
+	},
+	{
+		"text": "Your expense report has been successfully submitted.",
+		"label": "not spam"
+	},
+	{
+		"text": "Act fast to claim your exclusive rewards!",
+		"label": "spam"
+	},
+	{
+		"text": "The annual performance review is scheduled for next week.",
+		"label": "not spam"
+	},
+	{
+		"text": "Hot deal: Get free shipping on all orders over $50!",
+		"label": "spam"
+	},
+	{
+		"text": "Please confirm your attendance at the workshop.",
+		"label": "not spam"
+	},
+	{
+		"text": "Limited seats available! Register for free now!",
+		"label": "spam"
+	},
+	{
+		"text": "The office will be closed on Monday for maintenance.",
+		"label": "not spam"
+	},
+	{
+		"text": "Win free groceries for a year by entering this sweepstake!",
+		"label": "spam"
+	},
+	{
+		"text": "Your feedback on the recent survey is greatly appreciated.",
+		"label": "not spam"
+	},
+	{
+		"text": "Check out these unbelievable travel deals!",
+		"label": "spam"
+	},
+	{
+		"text": "A reminder to attend the team lunch tomorrow.",
+		"label": "not spam"
+	},
+	{
+		"text": "Save big with our limited-time holiday discounts!",
+		"label": "spam"
+	},
+	{
+		"text": "The IT team will be performing system upgrades this weekend.",
+		"label": "not spam"
+	},
+	{
+		"text": "Don't miss out on this once-in-a-lifetime opportunity!",
+		"label": "spam"
+	},
+	{
+		"text": "Meeting reminder: 2 PM tomorrow in conference room B.",
+		"label": "not spam"
+	},
+	{
+		"text": "Earn up to $5000 by working part-time from home!",
+		"label": "spam"
+	},
+	{
+		"text": "Your meeting room reservation has been confirmed.",
+		"label": "not spam"
+	},
+	{
+		"text": "Join our affiliate program and make money fast!",
+		"label": "spam"
+	},
+	{
+		"text": "Please sign the attached agreement and send it back.",
+		"label": "not spam"
+	},
+	{
+		"text": "The performance review has been rescheduled to next Monday.",
+		"label": "not spam"
+	},
+	{
+		"text": "Sign up now and receive free tickets to the event!",
+		"label": "spam"
+	},
+	{
+		"text": "Your reimbursement has been processed successfully.",
+		"label": "not spam"
+	},
+	{
+		"text": "Limited time only: Get 80% off your first order!",
+		"label": "spam"
+	},
+	{
+		"text": "Please note the changes in the project timeline.",
+		"label": "not spam"
+	},
+	{
+		"text": "The building will undergo maintenance tomorrow night.",
+		"label": "not spam"
+	},
+	{
+		"text": "Subscribe now to receive the latest updates!",
+		"label": "spam"
+	},
+	{
+		"text": "Your access to the online portal has been updated.",
+		"label": "not spam"
+	},
+	{
+		"text": "Act now to double your investment in just weeks!",
+		"label": "spam"
+	},
+	{
+		"text": "Your account has been temporarily suspended. Please contact support.",
+		"label": "not spam"
+	},
+	{
+		"text": "Win an all-expenses-paid trip to Europe!",
+		"label": "spam"
+	},
+	{
+		"text": "The client meeting has been postponed to next week.",
+		"label": "not spam"
+	},
+	{
+		"text": "Congratulations! You qualify for a special bonus offer!",
+		"label": "spam"
+	},
+	{
+		"text": "Your performance feedback is attached for your review.",
+		"label": "not spam"
+	},
+	{
+		"text": "Don't miss this chance to learn from the best for free!",
+		"label": "spam"
+	},
+	{
+		"text": "The quarterly company newsletter is now available.",
+		"label": "not spam"
+	},
+	{
+		"text": "Win free tickets to the concert of your dreams!",
+		"label": "spam"
+	},
+	{
+		"text": "The updated schedule has been sent to all team members.",
+		"label": "not spam"
+	},
+	{
+		"text": "Sign up for our exclusive course and transform your life!",
+		"label": "spam"
+	},
+	{
+		"text": "The holiday schedule has been updated. Please check your email.",
+		"label": "not spam"
+	},
+	{
+		"text": "Don't wait! Limited seats available for this incredible workshop!",
+		"label": "spam"
+	},
+	{
+		"text": "Reminder: Update your personal details in the HR portal.",
+		"label": "not spam"
+	},
+	{
+		"text": "Win a brand-new car by participating in our survey!",
+		"label": "spam"
+	},
+	{
+		"text": "The project demo has been scheduled for Friday at 3 PM.",
+		"label": "not spam"
+	},
+	{
+		"text": "Act fast! Limited time offer to save big on our best products!",
+		"label": "spam"
+	},
+	{
+		"text": "Thank you for attending the recent training session.",
+		"label": "not spam"
+	},
+	{
+		"text": "Learn the secret to success in just three simple steps!",
+		"label": "spam"
+	},
+	{
+		"text": "Your new work schedule is now available in the HR system.",
+		"label": "not spam"
+	},
+	{
+		"text": "Congratulations! You are eligible for an exclusive deal!",
+		"label": "spam"
+	},
+	{
+		"text": "The IT department will be performing maintenance this weekend.",
+		"label": "not spam"
+	},
+	{
+		"text": "Limited time offer: Unlock premium features for free!",
+		"label": "spam"
+	},
+	{
+		"text": "Your password reset request has been processed successfully.",
+		"label": "not spam"
+	}
+]
