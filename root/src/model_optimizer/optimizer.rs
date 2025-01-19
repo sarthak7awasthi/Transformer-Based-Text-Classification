@@ -1,5 +1,3 @@
-// src/optimizer.rs
-
 /// Module for implementing optimizers such as SGD and Adam.
 ///
 /// Purpose:
@@ -23,16 +21,16 @@ pub enum OptimizerType {
 pub struct Optimizer {
     optimizer_type: OptimizerType,
     learning_rate: f64,
-    beta1: f64,       // Adam specific
-    beta2: f64,       // Adam specific
-    epsilon: f64,     // Adam specific
-    moment1: Option<Array2<f64>>, // First moment estimate for Adam
-    moment2: Option<Array2<f64>>, // Second moment estimate for Adam
-    timestep: usize,  // Timestep for Adam
+    beta1: f64,       
+    beta2: f64,       
+    epsilon: f64,     
+    moment1: Option<Array2<f64>>, 
+    moment2: Option<Array2<f64>>,
+    timestep: usize, 
 }
 
 impl Optimizer {
-    /// Creates a new optimizer.
+    /// new optimizer.
     pub fn new(optimizer_type: OptimizerType) -> Self {
         Self {
             optimizer_type,
@@ -58,7 +56,7 @@ impl Optimizer {
         }
     }
 
-    /// Performs a single optimization step using SGD.
+ 
     fn sgd_step(&self, params: &mut ArrayViewMut2<f64>, grads: &ArrayView2<f64>) {
         assert_eq!(params.shape(), grads.shape(), "Parameter and gradient shapes must match.");
 
@@ -67,11 +65,11 @@ impl Optimizer {
         });
     }
 
-    /// Performs a single optimization step using Adam.
+  
     fn adam_step(&mut self, params: &mut ArrayViewMut2<f64>, grads: &ArrayView2<f64>) {
         assert_eq!(params.shape(), grads.shape(), "Parameter and gradient shapes must match.");
 
-        // Initialize moment estimates if not already initialized.
+  
         if self.moment1.is_none() {
             self.moment1 = Some(Array2::zeros(params.raw_dim()));
             self.moment2 = Some(Array2::zeros(params.raw_dim()));
@@ -83,7 +81,6 @@ impl Optimizer {
         self.timestep += 1;
         let t = self.timestep as f64;
 
-        // Update moment estimates.
         moment1.zip_mut_with(grads, |m1, &grad| {
             *m1 = self.beta1 * *m1 + (1.0 - self.beta1) * grad;
         });
@@ -92,15 +89,14 @@ impl Optimizer {
             *m2 = self.beta2 * *m2 + (1.0 - self.beta2) * grad.powi(2);
         });
 
-        // Compute bias-corrected moment estimates.
+     
         let bias_corrected_m1 = moment1.mapv(|m1| m1 / (1.0 - self.beta1.powf(t)));
         let bias_corrected_m2 = moment2.mapv(|m2| m2 / (1.0 - self.beta2.powf(t)));
 
-        // Update parameters.
         params.zip_mut_with(&bias_corrected_m1, |param, &m1| {
 					*param -= self.learning_rate * m1 / (bias_corrected_m2.mapv(f64::sqrt) + self.epsilon)
 							.iter()
-							.fold(0.0, |acc, &val| acc + val); // Ensures element-wise operation
+							.fold(0.0, |acc, &val| acc + val); 
 				});
 			
     }
@@ -130,7 +126,7 @@ mod tests {
 
         optimizer.step(&mut params.view_mut(), &grads.view());
 
-        // Specific values depend on hyperparameters and implementation.
-        assert_eq!(params.shape(), [2, 2]); // Check shape is preserved.
+      
+        assert_eq!(params.shape(), [2, 2]); 
     }
 }

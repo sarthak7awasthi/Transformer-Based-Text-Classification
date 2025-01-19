@@ -21,11 +21,7 @@ pub fn apply_layer_norm(inputs: &Array2<f64>, epsilon: f64) -> Array2<f64> {
 }
 
 
-/// Tests the `apply_layer_norm` function.
-///
-/// Verifies:
-/// - The mean of the normalized outputs is approximately zero.
-/// - The variance of the normalized outputs is approximately one.
+
 pub fn test_apply_layer_norm() {
     let inputs = Array2::from_shape_vec(
         (2, 4),
@@ -36,7 +32,7 @@ pub fn test_apply_layer_norm() {
 
     let normalized = apply_layer_norm(&inputs, epsilon);
 
-    // Check mean and variance for each row
+   
     for row in normalized.outer_iter() {
         let mean: f64 = row.mean().unwrap();
         let variance: f64 = row.var(1e-5);

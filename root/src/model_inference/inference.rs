@@ -17,28 +17,27 @@ impl<'a> Inference<'a> {
 
     /// Perform inference on a single input text.
     pub fn predict(&self, input_text: &str) -> Result<(usize, Vec<f64>), Box<dyn Error>> {
-        // Tokenize the input text
+   
         let tokenized_input = self.tokenizer.tokenize(input_text);
 
-        // Pad or truncate the sequence to the required length
+      
         let padded_input = self.tokenizer.pad_sequence(tokenized_input);
 
-        // Convert the tokenized input into the model-compatible format
+      
         let input_array = Array2::from_shape_vec(
-            (1, padded_input.len()), // Single batch, padded sequence
+            (1, padded_input.len()), 
             padded_input.into_iter().map(|x| x as f64).collect(),
         )?;
 
-        // Run the forward pass through the model
         let logits = self.model.forward(&input_array);
 
-        // Convert logits to probabilities using softmax
-        let logits_slice = logits.row(0).to_vec(); // Extract first row as a Vec
+        
+        let logits_slice = logits.row(0).to_vec(); 
         let exp_values: Vec<f64> = logits_slice.iter().map(|x| x.exp()).collect();
         let sum_exp: f64 = exp_values.iter().sum();
         let probabilities: Vec<f64> = exp_values.iter().map(|p| p / sum_exp).collect();
 
-        // Get the predicted class
+  
         let predicted_class = probabilities
             .iter()
             .enumerate()
@@ -59,7 +58,7 @@ mod tests {
 
     #[test]
     fn test_inference_predict() {
-        // Mock model and tokenizer setup
+    
         let vocab = HashMap::from([
             ("hello".to_string(), 0),
             ("world".to_string(), 1),
@@ -79,19 +78,17 @@ mod tests {
         let transformer = Transformer::new(config, vocab.clone());
         let tokenizer = Tokenizer::new(vocab, 128);
 
-        // Save mock model for testing
         let model_path = "mock_model.json";
         transformer.save(model_path).unwrap();
 
-        // Create inference instance
+   
         let inference = Inference::new(model_path, &tokenizer).unwrap();
 
-        // Test prediction
         let (predicted_class, probabilities) = inference.predict("hello world").unwrap();
         println!("Predicted Class: {}", predicted_class);
         println!("Probabilities: {:?}", probabilities);
 
-        // Cleanup mock model
+     
         std::fs::remove_file(model_path).unwrap();
     }
 }

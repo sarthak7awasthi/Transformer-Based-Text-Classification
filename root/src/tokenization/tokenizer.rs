@@ -9,14 +9,14 @@ pub struct Tokenizer {
 }
 
 impl Tokenizer {
-    /// Creates a new Tokenizer instance
+    /// new Tokenizer instance
     pub fn new(vocab: HashMap<String, usize>, max_seq_length: usize) -> Self {
         // Ensure special tokens are in the vocabulary
         Self::verify_vocab(&vocab);
         Tokenizer { vocab, max_seq_length }
     }
 
-    /// Verifies that special tokens exist in the vocabulary
+  
     fn verify_vocab(vocab: &HashMap<String, usize>) {
         let required_tokens = [PAD_TOKEN, UNK_TOKEN];
         for &token in &required_tokens {
@@ -26,7 +26,7 @@ impl Tokenizer {
         }
     }
 
-    /// Builds a vocabulary from a dataset with special tokens and optional max size
+ 
     pub fn build_vocab(
         dataset: &[String],
         special_tokens: &[&str],
@@ -34,7 +34,7 @@ impl Tokenizer {
     ) -> HashMap<String, usize> {
         let mut token_counts: HashMap<String, usize> = HashMap::new();
 
-        // Count token occurrences
+     
         for text in dataset {
             let tokens = Self::preprocess_text(text);
             for token in tokens {
@@ -42,13 +42,13 @@ impl Tokenizer {
             }
         }
 
-        // Add special tokens to the vocabulary
+      
         let mut vocab: HashMap<String, usize> = HashMap::new();
         for (i, &token) in special_tokens.iter().enumerate() {
             vocab.insert(token.to_string(), i);
         }
 
-        // Sort and truncate tokens by frequency
+
         let mut sorted_tokens: Vec<_> = token_counts.into_iter().collect();
         sorted_tokens.sort_by(|a, b| b.1.cmp(&a.1));
         let max_vocab_size = max_vocab_size.unwrap_or(sorted_tokens.len());
@@ -62,7 +62,6 @@ impl Tokenizer {
         vocab
     }
 
-    /// Tokenizes a single text into token IDs
     pub fn tokenize(&self, text: &str) -> Vec<usize> {
         let tokens = Self::preprocess_text(text);
         tokens
@@ -71,14 +70,14 @@ impl Tokenizer {
             .collect()
     }
 
-    /// Pads a sequence to the maximum sequence length
+    
     pub fn pad_sequence(&self, sequence: Vec<usize>) -> Vec<usize> {
         let mut padded_sequence = sequence;
         padded_sequence.resize(self.max_seq_length, self.vocab[PAD_TOKEN]);
         padded_sequence
     }
 
-    /// Tokenizes and pads a batch of texts
+
     pub fn tokenize_and_pad_batch(&self, texts: &[String]) -> Vec<Vec<usize>> {
         texts
             .iter()
@@ -89,7 +88,7 @@ impl Tokenizer {
             .collect()
     }
 
-    /// Preprocesses text by lowercasing and removing non-alphanumeric characters
+
     fn preprocess_text(text: &str) -> Vec<String> {
         text.to_lowercase()
             .chars()

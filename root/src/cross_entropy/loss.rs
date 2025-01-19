@@ -59,7 +59,7 @@ impl Loss {
                 label < probabilities.ncols(),
                 "Label index out of bounds for logits."
             );
-            // Add negative log probability for the true class
+         
             total_loss -= probabilities[(i, label)].ln();
         }
 
@@ -80,7 +80,7 @@ impl Loss {
         let mut gradients = probabilities;
 
         for (i, &label) in labels.iter().enumerate() {
-            gradients[(i, label)] -= 1.0; // Gradient adjustment for the true class
+            gradients[(i, label)] -= 1.0; 
         }
 
         gradients / labels.len() as f64

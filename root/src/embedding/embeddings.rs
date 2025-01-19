@@ -24,7 +24,7 @@ impl Embeddings {
         }
     }
 
-    /// Generates positional encodings for a given sequence length.
+    
     pub fn generate_positional_encodings(&self, seq_len: usize) -> Array2<f64> {
         let mut positional_encodings = Array2::zeros((seq_len, self.model_dim));
 
@@ -51,7 +51,7 @@ impl Embeddings {
             if token_idx < self.token_embedding_matrix.nrows() {
                 embeddings.row_mut(idx).assign(&self.token_embedding_matrix.row(token_idx));
             } else {
-                // Handle unknown token index
+             
                 let unknown_idx = self.vocab.get("<UNK>").copied().unwrap_or(0);
                 embeddings.row_mut(idx).assign(&self.token_embedding_matrix.row(unknown_idx));
             }
@@ -61,11 +61,11 @@ impl Embeddings {
         embeddings + positional_encodings
     }
 
-    /// Collects mutable references to all trainable parameters in the embeddings.
+ 
     pub fn parameters_mut(&mut self) -> Vec<&mut f64> {
         let mut params = vec![];
 
-        // Add mutable references to embedding matrix values
+
         for value in self.token_embedding_matrix.iter_mut() {
             params.push(value);
         }
@@ -89,7 +89,7 @@ mod tests {
 
         let embeddings = Embeddings::new(vocab.clone(), model_dim);
 
-        let input = vec![0, 1, 3]; // Using indices directly for testing
+        let input = vec![0, 1, 3]; 
         let encoded = embeddings.encode(&input);
 
         assert_eq!(encoded.shape(), &[3, model_dim]);
@@ -100,19 +100,19 @@ mod tests {
         let vocab = HashMap::from([
             ("hello".to_string(), 0),
             ("world".to_string(), 1),
-            ("<UNK>".to_string(), 2),
+            ("[UNK]".to_string(), 2),
         ]);
         let model_dim = 4;
 
         let embeddings = Embeddings::new(vocab.clone(), model_dim);
 
-        // Serialize
+    
         let serialized = serde_json::to_string(&embeddings).expect("Serialization failed");
 
-        // Deserialize
+     
         let deserialized: Embeddings = serde_json::from_str(&serialized).expect("Deserialization failed");
 
-        // Check consistency
+       
         assert_eq!(embeddings.model_dim, deserialized.model_dim);
         assert_eq!(embeddings.vocab, deserialized.vocab);
     }

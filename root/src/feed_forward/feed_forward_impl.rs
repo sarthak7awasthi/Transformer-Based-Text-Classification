@@ -33,11 +33,11 @@ impl FeedForwardNetwork {
     pub fn forward(&self, x: &Array2<f64>) -> Array2<f64> {
         assert_eq!(x.shape()[1], self.input_dim, "Input dimensions do not match!");
 
-        // First dense layer with ReLU activation
+       
         let mut h = x.dot(&self.w1) + &self.b1;
         h.mapv_inplace(|v| v.max(0.0));
 
-        // Second dense layer
+  
         let y = h.dot(&self.w2) + &self.b2;
 
         y

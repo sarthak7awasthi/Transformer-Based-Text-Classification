@@ -14,7 +14,7 @@ pub struct Trainer<'a> {
 }
 
 impl<'a> Trainer<'a> {
-    /// Create a new Trainer instance.
+    /// new Trainer instance.
     pub fn new(
         model: Transformer,
         optimizer: Optimizer,
@@ -31,7 +31,7 @@ impl<'a> Trainer<'a> {
 
     /// Train the model over the specified number of epochs.
     pub fn train(&mut self, dataset_path: &str, save_path: &str) {
-        // Load dataset
+   
         let (inputs, labels) = self.data_loader.load_dataset(dataset_path).unwrap();
         let batches = self.data_loader.create_batches(inputs, labels);
 
@@ -43,30 +43,28 @@ impl<'a> Trainer<'a> {
             let mut total_samples = 0;
 
             for (batch_inputs, batch_labels) in &batches {
-                // Convert inputs into a format compatible with the model
+               
                 let batch_array: Array2<f64> = Array2::from_shape_vec(
                     (batch_inputs.len(), batch_inputs[0].len()),
                     batch_inputs.iter().flatten().map(|&x| x as f64).collect(),
                 )
                 .unwrap();
 
-                // Forward pass
+        
                 let logits = self.model.forward(&batch_array);
 
-                // Compute loss
                 let loss = Loss::cross_entropy_loss(&logits, batch_labels);
                 epoch_loss += loss;
 
-                // Compute gradients
                 let gradients = Loss::gradients(&logits, batch_labels);
 
-                // Update parameters
+              
                 let mut params = self.model.parameters_mut();
                 for (param, grad) in params.iter_mut().zip(gradients.iter()) {
                     **param -= LEARNING_RATE * grad;
                 }
 
-                // Compute accuracy
+            
                 correct_predictions += self.compute_correct_predictions(&logits, batch_labels);
                 total_samples += batch_labels.len();
             }
@@ -79,16 +77,16 @@ impl<'a> Trainer<'a> {
                 epoch_accuracy * 100.0
             );
 
-            // Save the model after each epoch
+         
             let epoch_save_path = format!("{}_epoch_{}.json", save_path, epoch + 1);
             self.model.save(&epoch_save_path).expect("Failed to save model");
         }
 
-        // Save the final model
+   
         self.model.save(save_path).expect("Failed to save final model");
     }
 
-    /// Compute the number of correct predictions in a batch.
+  
     fn compute_correct_predictions(&self, logits: &Array2<f64>, labels: &[usize]) -> usize {
         logits
             .outer_iter()

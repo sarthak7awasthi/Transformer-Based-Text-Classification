@@ -27,22 +27,21 @@ impl EncoderLayer {
     /// # Returns
     /// - Processed embeddings (shape: [batch_size, seq_len, d_model]).
     pub fn forward(&self, x: &Array2<f64>) -> Array2<f64> {
-        // Attention computation
+    
         let attention_output = scaled_dot_product_attention(x, x, x);
 
-        // Add & normalize (Residual Connection 1)
+      
         let residual1 = x + &attention_output;
         let norm1 = apply_layer_norm(&residual1, self.epsilon);
 
-        // Feed-forward computation
+        
         let ffn_output = self.feed_forward.forward(&norm1);
 
-        // Add & normalize (Residual Connection 2)
         let residual2 = &norm1 + &ffn_output;
         apply_layer_norm(&residual2, self.epsilon)
     }
 
-    /// Collect mutable parameters for optimization
+ 
     pub fn parameters_mut(&mut self) -> Vec<&mut f64> {
         self.feed_forward.parameters_mut()
     }

@@ -14,25 +14,23 @@ impl<'a> Evaluator<'a> {
         Ok(Evaluator { model, data_loader })
     }
 
-    /// Evaluate the model on the test dataset.
+   
     pub fn evaluate(&self, dataset_path: &str) -> Result<(), Box<dyn std::error::Error>> {
-        // Load test dataset
+   
         let (inputs, labels) = self.data_loader.load_dataset(dataset_path)?;
 
-        // Convert inputs to the model's required format
+      
         let batch_array = Array2::from_shape_vec(
             (inputs.len(), inputs[0].len()),
             inputs.iter().flatten().map(|&x| x as f64).collect(),
         )?;
 
-        // Forward pass
+   
         let logits = self.model.forward(&batch_array);
 
-        // Compute accuracy
         let accuracy = self.compute_accuracy(&logits, &labels);
         println!("Accuracy: {:.2}%", accuracy * 100.0);
 
-        // Optional: Compute precision, recall, and F1-score
         let metrics = self.compute_metrics(&logits, &labels);
         println!(
             "Precision: {:.2}%, Recall: {:.2}%, F1-Score: {:.2}%",
@@ -44,7 +42,7 @@ impl<'a> Evaluator<'a> {
         Ok(())
     }
 
-    /// Compute accuracy from logits and labels.
+  
     fn compute_accuracy(&self, logits: &Array2<f64>, labels: &[usize]) -> f64 {
         let correct_predictions = logits
             .outer_iter()
@@ -63,7 +61,7 @@ impl<'a> Evaluator<'a> {
         correct_predictions as f64 / labels.len() as f64
     }
 
-    /// Compute precision, recall, and F1-score.
+  
     fn compute_metrics(&self, logits: &Array2<f64>, labels: &[usize]) -> (f64, f64, f64) {
         let num_classes = logits.shape()[1];
         let mut true_positives = vec![0; num_classes];

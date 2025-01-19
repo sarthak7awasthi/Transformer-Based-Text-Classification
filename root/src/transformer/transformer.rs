@@ -12,8 +12,8 @@ pub struct TransformerConfig {
     pub d_model: usize,
     pub num_heads: usize,
     pub ff_dim: usize,
-    pub num_classes: usize, // e.g., 2 for spam vs. not spam
-    pub epsilon: f64,       // For layer normalization
+    pub num_classes: usize, 
+    pub epsilon: f64,     
 }
 
 /// The Transformer struct holds:
@@ -66,26 +66,24 @@ impl Transformer {
     pub fn forward(&self, batched_tokens: &Array2<f64>) -> Array2<f64> {
         println!("Input tokens shape: {:?}", batched_tokens.shape());
     
-        // Pass through encoder layers
+       
         let mut encoder_output = batched_tokens.clone();
         for (i, layer) in self.encoder_layers.iter().enumerate() {
             encoder_output = layer.forward(&encoder_output);
             println!("Shape after encoder layer {}: {:?}", i + 1, encoder_output.shape());
         }
     
-        // Instead of mean pooling, we'll use the last token's representation
-        // This maintains the batch dimension
+       
         let batch_size = encoder_output.nrows();
         let sequence_features = encoder_output.clone();
     
-        // Pass through the classification head
         let logits = self.classification_head.forward(&sequence_features);
         println!("Output logits shape: {:?}", logits.shape());
     
         logits
     }
 
-    /// Collects mutable references to all trainable parameters in the Transformer.
+
     pub fn parameters_mut(&mut self) -> Vec<&mut f64> {
         let mut params = vec![];
 
@@ -128,6 +126,6 @@ mod tests {
 
         let logits = transformer.forward(&batched_tokens);
 
-        assert_eq!(logits.shape(), [2, 2]); // Shape: [batch_size, num_classes]
+        assert_eq!(logits.shape(), [2, 2]); 
     }
 }
