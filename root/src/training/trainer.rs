@@ -4,6 +4,7 @@ use crate::model_optimizer::optimizer::Optimizer;
 use crate::transformer::Transformer;
 use crate::configurration::config::{BATCH_SIZE, LEARNING_RATE};
 use ndarray::Array2;
+use std::fs;
 
 pub struct Trainer<'a> {
     pub model: Transformer,
@@ -29,7 +30,7 @@ impl<'a> Trainer<'a> {
     }
 
     /// Train the model over the specified number of epochs.
-    pub fn train(&mut self, dataset_path: &str) {
+    pub fn train(&mut self, dataset_path: &str, save_path: &str) {
         // Load dataset
         let (inputs, labels) = self.data_loader.load_dataset(dataset_path).unwrap();
         let batches = self.data_loader.create_batches(inputs, labels);
@@ -44,10 +45,10 @@ impl<'a> Trainer<'a> {
             for (batch_inputs, batch_labels) in &batches {
                 // Convert inputs into a format compatible with the model
                 let batch_array: Array2<f64> = Array2::from_shape_vec(
-									(batch_inputs.len(), batch_inputs[0].len()),
-									batch_inputs.iter().flatten().map(|&x| x as f64).collect(),
-								).unwrap();
-							
+                    (batch_inputs.len(), batch_inputs[0].len()),
+                    batch_inputs.iter().flatten().map(|&x| x as f64).collect(),
+                )
+                .unwrap();
 
                 // Forward pass
                 let logits = self.model.forward(&batch_array);
@@ -62,9 +63,8 @@ impl<'a> Trainer<'a> {
                 // Update parameters
                 let mut params = self.model.parameters_mut();
                 for (param, grad) in params.iter_mut().zip(gradients.iter()) {
-									**param -= LEARNING_RATE * grad;
-								}
-							
+                    **param -= LEARNING_RATE * grad;
+                }
 
                 // Compute accuracy
                 correct_predictions += self.compute_correct_predictions(&logits, batch_labels);
@@ -78,7 +78,14 @@ impl<'a> Trainer<'a> {
                 epoch_loss / batches.len() as f64,
                 epoch_accuracy * 100.0
             );
+
+            // Save the model after each epoch
+            let epoch_save_path = format!("{}_epoch_{}.json", save_path, epoch + 1);
+            self.model.save(&epoch_save_path).expect("Failed to save model");
         }
+
+        // Save the final model
+        self.model.save(save_path).expect("Failed to save final model");
     }
 
     /// Compute the number of correct predictions in a batch.
@@ -129,6 +136,8 @@ mod tests {
 
         let mut trainer = Trainer::new(transformer, optimizer, &data_loader, 3);
 
-        trainer.train("mock_dataset.json");
+        trainer.train("mock_dataset.json", "trained_model");
+
+        assert!(fs::metadata("trained_model.json").is_ok());
     }
 }

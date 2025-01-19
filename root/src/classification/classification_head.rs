@@ -1,10 +1,12 @@
 use ndarray::{Array2, Axis};
 use ndarray_rand::RandomExt;
 use ndarray_rand::rand_distr::Uniform;
+use serde::{Serialize, Deserialize};
 
+#[derive(Serialize, Deserialize)]
 pub struct ClassificationHead {
-    weights: Array2<f64>, // Weight matrix for the output layer
-    biases: Array2<f64>,  // Bias vector for the output layer
+    weights: Array2<f64>,
+    biases: Array2<f64>,
 }
 
 impl ClassificationHead {
@@ -91,5 +93,20 @@ mod tests {
 
         let params = head.parameters_mut();
         assert_eq!(params.len(), d_model * num_classes + num_classes);
+    }
+
+    #[test]
+    fn test_serialization() {
+        let d_model = 4;
+        let num_classes = 2;
+        let head = ClassificationHead::new(d_model, num_classes);
+
+        // Test serialization
+        let serialized = serde_json::to_string(&head).expect("Failed to serialize");
+        let deserialized: ClassificationHead = serde_json::from_str(&serialized).expect("Failed to deserialize");
+
+        // Verify dimensions are preserved
+        assert_eq!(head.weights.shape(), deserialized.weights.shape());
+        assert_eq!(head.biases.shape(), deserialized.biases.shape());
     }
 }

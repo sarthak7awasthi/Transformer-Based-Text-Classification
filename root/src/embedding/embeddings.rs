@@ -1,27 +1,19 @@
-// Module: embeddings.rs
-
-/// Purpose:
-/// Converts tokens into dense vectors and adds positional encodings.
-/// Input: Tokenized input.
-/// Output: Token embeddings with positional encodings.
-
 use std::collections::HashMap;
 use ndarray::{Array2, Array};
 use ndarray_rand::RandomExt;
 use ndarray_rand::rand_distr::Uniform;
 
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize)]
 pub struct Embeddings {
-    token_embedding_matrix: Array2<f64>, // Matrix to store token embeddings
-    vocab: HashMap<String, usize>,      // Vocabulary mapping tokens to indices
-    model_dim: usize,                   // Embedding dimension
+    token_embedding_matrix: Array2<f64>,
+    vocab: HashMap<String, usize>,
+    model_dim: usize,
 }
 
 impl Embeddings {
     /// Creates a new `Embeddings` instance.
-    ///
-    /// # Arguments
-    /// * `vocab` - Vocabulary mapping tokens to indices.
-    /// * `model_dim` - Dimension of the embeddings.
     pub fn new(vocab: HashMap<String, usize>, model_dim: usize) -> Self {
         let vocab_size = vocab.len();
         let token_embedding_matrix = Array2::random((vocab_size, model_dim), Uniform::new(-0.1, 0.1));
@@ -33,12 +25,6 @@ impl Embeddings {
     }
 
     /// Generates positional encodings for a given sequence length.
-    ///
-    /// # Arguments
-    /// * `seq_len` - Length of the input sequence.
-    ///
-    /// # Returns
-    /// * A matrix of shape (seq_len, model_dim) containing positional encodings.
     pub fn generate_positional_encodings(&self, seq_len: usize) -> Array2<f64> {
         let mut positional_encodings = Array2::zeros((seq_len, self.model_dim));
 
@@ -57,12 +43,6 @@ impl Embeddings {
     }
 
     /// Converts tokenized input into dense vectors and adds positional encodings.
-    ///
-    /// # Arguments
-    /// * `tokenized_input` - A slice of tokenized input indices.
-    ///
-    /// # Returns
-    /// * A matrix of shape (seq_len, model_dim) with embeddings and positional encodings.
     pub fn encode(&self, tokenized_input: &[usize]) -> Array2<f64> {
         let seq_len = tokenized_input.len();
         let mut embeddings = Array2::zeros((seq_len, self.model_dim));
@@ -113,5 +93,27 @@ mod tests {
         let encoded = embeddings.encode(&input);
 
         assert_eq!(encoded.shape(), &[3, model_dim]);
+    }
+
+    #[test]
+    fn test_serialization() {
+        let vocab = HashMap::from([
+            ("hello".to_string(), 0),
+            ("world".to_string(), 1),
+            ("<UNK>".to_string(), 2),
+        ]);
+        let model_dim = 4;
+
+        let embeddings = Embeddings::new(vocab.clone(), model_dim);
+
+        // Serialize
+        let serialized = serde_json::to_string(&embeddings).expect("Serialization failed");
+
+        // Deserialize
+        let deserialized: Embeddings = serde_json::from_str(&serialized).expect("Deserialization failed");
+
+        // Check consistency
+        assert_eq!(embeddings.model_dim, deserialized.model_dim);
+        assert_eq!(embeddings.vocab, deserialized.vocab);
     }
 }

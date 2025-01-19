@@ -12,6 +12,7 @@ mod data_handler;
 mod cross_entropy;
 mod model_optimizer;
 mod training;
+mod model_evaluator;
 
 use std::collections::HashMap;
 use positional_encoding::position_encoding_calculator;
@@ -26,6 +27,7 @@ use data_handler::data_loader::DataLoader;
 use cross_entropy::loss::Loss;
 use model_optimizer::optimizer::{Optimizer, OptimizerType};
 use training::trainer::Trainer;
+use model_evaluator::evaluator::Evaluator;
 use crate::configurration::config::{PAD_TOKEN, UNK_TOKEN, MAX_SEQ_LENGTH};
 
 fn main() {
@@ -43,6 +45,7 @@ fn main() {
     test_cross_entropy_loss();
     test_optimizer();
     test_trainer();
+    test_evaluator();
 
     println!("\nAll module tests completed successfully!");
 }
@@ -129,8 +132,6 @@ fn test_transformer() {
     assert_eq!(logits.shape(), [2, 2]); // Ensure logits have the correct shape
 }
 
-
-
 fn test_tokenizer() {
     let dataset = vec![
         "Hello world!".to_string(),
@@ -187,9 +188,7 @@ fn test_optimizer() {
     println!("Parameters after Adam:\n{:?}\n", params);
 }
 
-
 fn test_trainer() {
-    // Create vocabulary with special tokens
     let mut vocab = std::collections::HashMap::from([
         (PAD_TOKEN.to_string(), 0),
         (UNK_TOKEN.to_string(), 1),
@@ -199,9 +198,9 @@ fn test_trainer() {
 
     let config = TransformerConfig {
         num_layers: 2,
-        d_model: 128, // Changed from 4 to match sequence length
+        d_model: 128, // Adjusted for sequence length
         num_heads: 8, // Should be a factor of d_model
-        ff_dim: 256, // Typically 2-4x d_model
+        ff_dim: 256,  // Typically 2-4x d_model
         num_classes: 2,
         epsilon: 1e-6,
     };
@@ -212,5 +211,31 @@ fn test_trainer() {
     let data_loader = DataLoader::new(&tokenizer);
 
     let mut trainer = Trainer::new(transformer, optimizer, &data_loader, 3);
-    trainer.train("src/test_dataset.json");
+    trainer.train("src/test_dataset.json", "src/trained_model.json");
+}
+
+
+fn test_evaluator() {
+    let vocab = HashMap::from([
+        (PAD_TOKEN.to_string(), 0),  // Use constant from config
+        (UNK_TOKEN.to_string(), 1),  // Use constant from config
+        ("hello".to_string(), 2),
+        ("world".to_string(), 3),
+    ]);
+
+    let tokenizer = Tokenizer::new(vocab.clone(), MAX_SEQ_LENGTH);
+    let data_loader = DataLoader::new(&tokenizer);
+
+    // Load the trained model
+    let model_path = "src/trained_model.json";
+    match Evaluator::new(model_path, &data_loader) {
+        Ok(evaluator) => {
+            // Evaluate the model on a test dataset
+            let test_dataset_path = "src/test_dataset.json";
+            if let Err(e) = evaluator.evaluate(test_dataset_path) {
+                eprintln!("Evaluation error: {}", e);
+            }
+        }
+        Err(e) => eprintln!("Failed to load model for evaluation: {}", e),
+    }
 }

@@ -1,139 +1,104 @@
-// src/evaluator.rs
-
-use std::collections::HashMap;
 use crate::transformer::Transformer;
-use crate::cross_entropy::loss::Loss;
+use crate::data_handler::data_loader::DataLoader;
+use ndarray::Array2;
 
-/// Struct to evaluate the performance of the trained model.
-pub struct Evaluator;
+pub struct Evaluator<'a> {
+    pub model: Transformer,
+    pub data_loader: &'a DataLoader<'a>,
+}
 
-impl Evaluator {
+impl<'a> Evaluator<'a> {
     /// Creates a new Evaluator instance.
-    ///
-    /// # Returns
-    /// A new instance of the Evaluator struct.
-    pub fn new() -> Self {
-        Self
+    pub fn new(model_path: &str, data_loader: &'a DataLoader) -> Result<Self, std::io::Error> {
+        let model = Transformer::load(model_path)?;
+        Ok(Evaluator { model, data_loader })
     }
 
-    /// Evaluates the model's performance on test data.
-    ///
-    /// # Arguments
-    /// * `model` - A reference to the trained Transformer model.
-    /// * `inputs` - A reference to the test inputs (tokenized and padded sequences).
-    /// * `labels` - A reference to the ground truth labels corresponding to the inputs.
-    ///
-    /// # Returns
-    /// * A tuple containing:
-    ///   - The loss value (f64).
-    ///   - A HashMap of metrics (accuracy, precision, recall, F1 score, etc.).
-    pub fn evaluate(
-        &self,
-        model: &Transformer,
-        inputs: &[Vec<usize>],
-        labels: &[usize],
-    ) -> (f64, HashMap<String, f64>) {
-        // Forward pass: Generate logits from the model
-        let logits = model.forward(inputs);
+    /// Evaluate the model on the test dataset.
+    pub fn evaluate(&self, dataset_path: &str) -> Result<(), Box<dyn std::error::Error>> {
+        // Load test dataset
+        let (inputs, labels) = self.data_loader.load_dataset(dataset_path)?;
 
-        // Compute loss
-        let loss = Loss::cross_entropy_loss(&logits, labels);
+        // Convert inputs to the model's required format
+        let batch_array = Array2::from_shape_vec(
+            (inputs.len(), inputs[0].len()),
+            inputs.iter().flatten().map(|&x| x as f64).collect(),
+        )?;
 
-        // Compute accuracy and other metrics
-        let metrics = self.calculate_metrics(&logits, labels);
+        // Forward pass
+        let logits = self.model.forward(&batch_array);
 
-        (loss, metrics)
+        // Compute accuracy
+        let accuracy = self.compute_accuracy(&logits, &labels);
+        println!("Accuracy: {:.2}%", accuracy * 100.0);
+
+        // Optional: Compute precision, recall, and F1-score
+        let metrics = self.compute_metrics(&logits, &labels);
+        println!(
+            "Precision: {:.2}%, Recall: {:.2}%, F1-Score: {:.2}%",
+            metrics.0 * 100.0,
+            metrics.1 * 100.0,
+            metrics.2 * 100.0
+        );
+
+        Ok(())
     }
 
-    /// Calculates evaluation metrics (accuracy, precision, recall, F1 score).
-    ///
-    /// # Arguments
-    /// * `logits` - A reference to the model's output logits.
-    /// * `labels` - A reference to the ground truth labels.
-    ///
-    /// # Returns
-    /// A HashMap containing calculated metrics.
-    fn calculate_metrics(
-        &self,
-        logits: &[Vec<f64>],
-        labels: &[usize],
-    ) -> HashMap<String, f64> {
-        let mut metrics = HashMap::new();
-
-        // Compute predictions from logits
-        let predictions: Vec<usize> = logits
-            .iter()
-            .map(|logit| {
-                logit
+    /// Compute accuracy from logits and labels.
+    fn compute_accuracy(&self, logits: &Array2<f64>, labels: &[usize]) -> f64 {
+        let correct_predictions = logits
+            .outer_iter()
+            .zip(labels.iter())
+            .filter(|(logit, &label)| {
+                let predicted_label = logit
                     .iter()
                     .enumerate()
-                    .max_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
-                    .map(|(idx, _)| idx)
-                    .unwrap()
+                    .max_by(|a, b| a.1.partial_cmp(b.1).unwrap())
+                    .map(|(index, _)| index)
+                    .unwrap_or(0);
+                predicted_label == label
             })
-            .collect();
-
-        // Calculate accuracy
-        let correct = predictions
-            .iter()
-            .zip(labels.iter())
-            .filter(|(pred, label)| pred == label)
             .count();
-        let accuracy = correct as f64 / labels.len() as f64 * 100.0;
 
-        // Calculate precision, recall, and F1 score
-        let (precision, recall, f1_score) = self.calculate_prf(&predictions, labels);
-
-        // Insert metrics into the HashMap
-        metrics.insert("accuracy".to_string(), accuracy);
-        metrics.insert("precision".to_string(), precision);
-        metrics.insert("recall".to_string(), recall);
-        metrics.insert("f1_score".to_string(), f1_score);
-
-        metrics
+        correct_predictions as f64 / labels.len() as f64
     }
 
-    /// Computes precision, recall, and F1 score.
-    ///
-    /// # Arguments
-    /// * `predictions` - A reference to the predicted labels.
-    /// * `labels` - A reference to the ground truth labels.
-    ///
-    /// # Returns
-    /// A tuple containing precision, recall, and F1 score.
-    fn calculate_prf(
-        &self,
-        predictions: &[usize],
-        labels: &[usize],
-    ) -> (f64, f64, f64) {
-        let mut true_positive = 0;
-        let mut false_positive = 0;
-        let mut false_negative = 0;
+    /// Compute precision, recall, and F1-score.
+    fn compute_metrics(&self, logits: &Array2<f64>, labels: &[usize]) -> (f64, f64, f64) {
+        let num_classes = logits.shape()[1];
+        let mut true_positives = vec![0; num_classes];
+        let mut false_positives = vec![0; num_classes];
+        let mut false_negatives = vec![0; num_classes];
 
-        for (pred, label) in predictions.iter().zip(labels.iter()) {
-            if *pred == *label {
-                true_positive += 1;
+        for (logit, &label) in logits.outer_iter().zip(labels.iter()) {
+            let predicted_label = logit
+                .iter()
+                .enumerate()
+                .max_by(|a, b| a.1.partial_cmp(b.1).unwrap())
+                .map(|(index, _)| index)
+                .unwrap_or(0);
+
+            if predicted_label == label {
+                true_positives[label] += 1;
             } else {
-                if *pred == 1 {
-                    false_positive += 1;
-                }
-                if *label == 1 {
-                    false_negative += 1;
-                }
+                false_positives[predicted_label] += 1;
+                false_negatives[label] += 1;
             }
         }
 
-        let precision = if true_positive + false_positive > 0 {
-            true_positive as f64 / (true_positive + false_positive) as f64
-        } else {
-            0.0
-        };
+        let precision: f64 = true_positives
+            .iter()
+            .zip(false_positives.iter())
+            .map(|(tp, fp)| *tp as f64 / (*tp + *fp).max(1) as f64)
+            .sum::<f64>()
+            / num_classes as f64;
 
-        let recall = if true_positive + false_negative > 0 {
-            true_positive as f64 / (true_positive + false_negative) as f64
-        } else {
-            0.0
-        };
+        let recall: f64 = true_positives
+            .iter()
+            .zip(false_negatives.iter())
+            .map(|(tp, fn_val)| *tp as f64 / (*tp + *fn_val).max(1) as f64)
+            .sum::<f64>()
+            / num_classes as f64;
 
         let f1_score = if precision + recall > 0.0 {
             2.0 * (precision * recall) / (precision + recall)

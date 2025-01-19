@@ -2,7 +2,9 @@ use crate::attention::scaled_dot_product_attention;
 use crate::feed_forward::FeedForwardNetwork;
 use crate::layer_norm::apply_layer_norm;
 use ndarray::{Array2, Axis};
+use serde::{Serialize, Deserialize};
 
+#[derive(Serialize, Deserialize)]
 pub struct EncoderLayer {
     pub feed_forward: FeedForwardNetwork,
     pub epsilon: f64,

@@ -3,9 +3,10 @@ use crate::classification::ClassificationHead;
 use crate::embedding::embeddings::Embeddings;
 use std::collections::HashMap;
 use ndarray::{Array2, Axis};
+use serde::{Serialize, Deserialize};
 
 /// Transformer configuration parameters.
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct TransformerConfig {
     pub num_layers: usize,
     pub d_model: usize,
@@ -20,6 +21,7 @@ pub struct TransformerConfig {
 /// - A ClassificationHead (optional, if you're doing classification right away).
 /// - An Embeddings module to encode input tokens.
 /// - Configuration parameters for clarity.
+#[derive(Serialize, Deserialize)]
 pub struct Transformer {
     pub encoder_layers: Vec<EncoderLayer>,
     pub classification_head: ClassificationHead,
@@ -47,6 +49,18 @@ impl Transformer {
         }
     }
 
+    pub fn save(&self, file_path: &str) -> Result<(), std::io::Error> {
+        let serialized = serde_json::to_string(self).expect("Failed to serialize model");
+        std::fs::write(file_path, serialized)?;
+        Ok(())
+    }
+
+    pub fn load(file_path: &str) -> Result<Self, std::io::Error> {
+        let data = std::fs::read_to_string(file_path)?;
+        let model: Transformer = serde_json::from_str(&data).expect("Failed to deserialize model");
+        Ok(model)
+    }
+
     /// Forward pass through the Transformer.
     /// Processes input tokens through embeddings, encoders, and a classification head.
     pub fn forward(&self, batched_tokens: &Array2<f64>) -> Array2<f64> {
@@ -70,8 +84,6 @@ impl Transformer {
     
         logits
     }
-    
-    
 
     /// Collects mutable references to all trainable parameters in the Transformer.
     pub fn parameters_mut(&mut self) -> Vec<&mut f64> {
