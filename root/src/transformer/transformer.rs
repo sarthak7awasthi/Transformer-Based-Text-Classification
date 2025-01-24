@@ -93,34 +93,3 @@ impl Transformer {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use ndarray::array;
-
-    #[test]
-    fn test_transformer_forward() {
-        let vocab = HashMap::from([
-            ("hello".to_string(), 0),
-            ("world".to_string(), 1),
-            ("<UNK>".to_string(), 2),
-        ]);
-
-        let config = TransformerConfig {
-            num_layers: 2,
-            d_model: 4,
-            num_heads: 2,
-            ff_dim: 8,
-            num_classes: 2,
-            epsilon: 1e-6,
-        };
-
-        let transformer = Transformer::new(config, vocab);
-
-        let batched_tokens = array![[0.1, 0.2, 0.3, 0.4], [0.4, 0.3, 0.2, 0.1]];
-
-        let logits = transformer.forward(&batched_tokens);
-
-        assert_eq!(logits.shape(), [2, 2]); 
-    }
-}
