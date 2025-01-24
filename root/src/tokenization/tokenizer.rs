@@ -26,7 +26,7 @@ impl Tokenizer {
         }
     }
 
- 
+ // function to build vocab dynamically utilizing the dataset
     pub fn build_vocab(
         dataset: &[String],
         special_tokens: &[&str],
