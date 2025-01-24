@@ -16,11 +16,6 @@ pub struct TransformerConfig {
     pub epsilon: f64,     
 }
 
-/// The Transformer struct holds:
-/// - A stack of Encoder layers.
-/// - A ClassificationHead (optional, if you're doing classification right away).
-/// - An Embeddings module to encode input tokens.
-/// - Configuration parameters for clarity.
 #[derive(Serialize, Deserialize)]
 pub struct Transformer {
     pub encoder_layers: Vec<EncoderLayer>,
@@ -30,8 +25,8 @@ pub struct Transformer {
 }
 
 impl Transformer {
-    /// Creates a new Transformer with the specified configuration.
-    /// Constructs `num_layers` encoders, a single classification head, and embeddings.
+    /// Creates a new Transformer 
+
     pub fn new(config: TransformerConfig, vocab: HashMap<String, usize>) -> Self {
         let embeddings = Embeddings::new(vocab, config.d_model);
 
