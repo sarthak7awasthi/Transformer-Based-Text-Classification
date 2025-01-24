@@ -78,13 +78,13 @@ mod tests {
         let transformer = Transformer::new(config, vocab.clone());
         let tokenizer = Tokenizer::new(vocab, 128);
 
-        let model_path = "mock_model.json";
+        let model_path = "trained_model.json";
         transformer.save(model_path).unwrap();
 
    
         let inference = Inference::new(model_path, &tokenizer).unwrap();
 
-        let (predicted_class, probabilities) = inference.predict("hello world").unwrap();
+        let (predicted_class, probabilities) = inference.predict("Your appointment is booked.").unwrap();
         println!("Predicted Class: {}", predicted_class);
         println!("Probabilities: {:?}", probabilities);
 
