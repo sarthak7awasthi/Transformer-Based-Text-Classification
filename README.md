@@ -183,10 +183,11 @@ The configuration settings are defined in the `config.rs` file and are crucial f
 
 ---
 
-## Future Improvements
-1. **Multi-GPU Support**: Enable distributed training.
+## Future Improvements/Todos
+1. **Auto specifying Epochs**: Update training module to auto specify the number of epochs or later in integration.
 2. **Visualization Tools**: Add support for attention heatmaps and loss graphs.
 3. **Pre-trained Models**: Incorporate pre-trained weights for fine-tuning.
+4. **Tests**: Fix tests and add more tests.
 
 ---
 
