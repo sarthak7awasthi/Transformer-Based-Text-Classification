@@ -1,3 +1,6 @@
+
+
+// I tweaked the math a bit in this module. the original formula is slightly different. refer the readme i made for this module.
 use std::f64::consts::PI;
 
 /// module for positional encoding
