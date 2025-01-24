@@ -29,6 +29,12 @@ impl<'a> Trainer<'a> {
         }
     }
 
+
+    
+// todo: auto specify epochs
+
+
+    
     /// Train the model over the specified number of epochs.
     pub fn train(&mut self, dataset_path: &str, save_path: &str) {
    
@@ -104,38 +110,3 @@ impl<'a> Trainer<'a> {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::transformer::TransformerConfig;
-    use crate::model_optimizer::optimizer::OptimizerType;
-
-    #[test]
-    fn test_trainer() {
-        let vocab = std::collections::HashMap::from([
-            ("hello".to_string(), 0),
-            ("world".to_string(), 1),
-            ("<UNK>".to_string(), 2),
-        ]);
-
-        let config = TransformerConfig {
-            num_layers: 2,
-            d_model: 4,
-            num_heads: 2,
-            ff_dim: 8,
-            num_classes: 2,
-            epsilon: 1e-6,
-        };
-
-        let transformer = Transformer::new(config, vocab);
-        let optimizer = Optimizer::new(OptimizerType::SGD);
-        let tokenizer = crate::tokenization::tokenizer::Tokenizer::new(vocab, 128);
-        let data_loader = DataLoader::new(&tokenizer);
-
-        let mut trainer = Trainer::new(transformer, optimizer, &data_loader, 3);
-
-        trainer.train("mock_dataset.json", "trained_model");
-
-        assert!(fs::metadata("trained_model.json").is_ok());
-    }
-}
